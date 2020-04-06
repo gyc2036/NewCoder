@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool win(map<int, int> m);
+bool triple(int, map<int, int>m);
+
+int main(){
+    vector<int> v;
+    vector<int> result;
+    map<int, int> m;
+    for(int i = 0; i < 10; i++){
+        m[i] = 0;
+    }
+    for(int i = 0; i < 13; i++){
+        int temp;
+        cin>>temp;
+        m[temp]++;
+    }
+    int win_count = 0;
+    for(int i = 1; i < 10; i++){
+        if(m[i] < 4){
+        m[i]++;
+        if(win(m)){
+            win_count++;
+            cout<<i<<" ";
+        }
+        m[i]--;
+    }
+    }
+}
+
+bool win(map<int, int> m){
+    for(int i = 1; i < 10; i++){
+        if(m[i] < 2)continue;
+        m[i] -= 2;
+        if(triple(4, m))
+            return true;
+        m[i] += 2;
+    }
+    return false;
+}
+
+bool triple(int n, map<int, int> m){
+    if(n == 0)return true;
+    for(int i = 1; i < 10; i++){
+        if(m[i] >= 3){
+            m[i] -= 3;
+            bool b = triple(n - 1, m);
+            m[i] += 3;
+            if(b)return true;
+        }
+        if(i > 1 && i < 9 && m[i-1] > 0 && m[i] > 0 && m[i+1] > 0){
+            m[i-1]--;
+            m[i]--;
+            m[i+1]--;
+            bool b = triple(n - 1, m);
+            m[i-1]++;
+            m[i]++;
+            m[i+1]++;
+            if(b)return true;
+        }
+    }
+    return false;
+}
